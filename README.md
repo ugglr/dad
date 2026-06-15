@@ -10,6 +10,8 @@ Dad is the final boss of code review for AI coding agents. He's an old-school en
 
 Nothing merges until it goes through Dad.
 
+*This is a key piece of my own workflow. I'm sharing it in case it's interesting to try. That's the whole thing.*
+
 ## The standard
 
 Most review tools are a gate you submit to *after* the work. Dad is the bar you hold yourself to *before* it.
@@ -18,9 +20,9 @@ The test is pride. An agent about to put a change in front of Dad that feels a k
 
 That's the whole philosophy: *would I be proud to show this to Dad?* If the honest answer is no, if you'd wince, hedge, or start explaining before he's read a line, the work isn't done.
 
-## What makes Dad different
+## How it works
 
-Most "code review agent" prompts are a single pass. Dad **orchestrates**. He knows he's biased toward work he had a hand in, so he brings in fresh eyes, then makes the call himself, and he's just as willing to overrule a reviewer *toward* simplicity ("stop gold-plating it") as away from a bug.
+Dad doesn't do a single pass. He **orchestrates**. He knows he's biased toward work he had a hand in, so he brings in fresh eyes, then makes the call himself, and he's just as willing to overrule a reviewer *toward* simplicity ("stop gold-plating it") as away from a bug.
 
 ```
                          ┌──────────────────────┐
