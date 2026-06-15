@@ -3,7 +3,7 @@
   "owner": {
     "name": "Carl Igelstrom"
   },
-  "description": "Dad — the final boss of code review.",
+  "description": "Dad: the final boss of code review.",
   "plugins": [
     {
       "name": "dad",
