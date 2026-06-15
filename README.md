@@ -70,7 +70,7 @@ No compliment sandwiches. If it's good, he says "Ship it." and he's done.
 
 ## Install
 
-Two commands. That's the whole ask.
+Two commands.
 
 ### Claude Code
 
