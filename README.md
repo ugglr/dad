@@ -68,24 +68,22 @@ Most "code review agent" prompts are a single pass. Dad **orchestrates**. He kno
 
 No compliment sandwiches. If it's good, he says "Ship it." and he's done.
 
-## Install (Claude Code)
+## Install
+
+Two commands. That's the whole ask.
+
+### Claude Code
 
 ```bash
-# Add the marketplace
 /plugin marketplace add ugglr/dad
-
-# Install the plugin
 /plugin install dad@dad
 ```
 
-This gives you both:
+Then say *"dad review this"* in any conversation (he shows up in `/agents`), or run `/dad` to review uncommitted changes (`/dad main` diffs against `main`).
 
-- the **`dad` subagent**: invoke it from any conversation (it shows up in `/agents`), or just say *"dad review this"*
-- the **`/dad` slash command**: `/dad` reviews uncommitted changes; `/dad main` diffs the current branch against `main`
+### Any other agent
 
-## Use it with other agents
-
-Dad is just a system prompt. If you're not on Claude Code, copy [`agents/dad.md`](agents/dad.md) into your tool's custom-instructions / rules / agent file. The persona and the review framework travel anywhere; only the slash-command wiring is Claude Code specific.
+Dad is just a system prompt. Copy [`agents/dad.md`](agents/dad.md) into your tool's custom-instructions / rules / agent file. The persona and the review framework travel anywhere; only the slash-command wiring is Claude Code specific.
 
 ## Why "Dad"
 
