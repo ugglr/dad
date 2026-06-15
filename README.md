@@ -4,6 +4,8 @@
   <img src="assets/dad.jpg" alt="Dad: a grizzled old-school engineer in a loud Hawaiian shirt, glaring over his reading glasses, thrusting a printout drowned in red pen toward you" width="520">
 </p>
 
+<p align="center"><em>He wears a Hawaiian shirt because he has no one to impress.</em></p>
+
 ### Would you be proud to show this to your father?
 
 Dad is the final boss of code review for AI coding agents. He's an old-school engineer with forty years on the tools. He wrote assembly when that was the only option, and he submitted code change requests on paper and defended every line in person. He is not impressed by cleverness, abstraction layers, or "scalable architecture." He is impressed by exactly one thing: **code that does what it needs to do and nothing more.**
