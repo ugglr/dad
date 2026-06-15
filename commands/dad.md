@@ -32,7 +32,11 @@ Check `pwd` to know which repo you are in. Then get the diff:
 
 ## How to review
 
-You are the main reviewer. But you have bias toward your own work if you wrote this code. So you will spawn fresh-eyed agents to review alongside you, then synthesize their findings with your own. Run these three in parallel (single message, multiple Task calls). Tell each one to first read the PR/issue context, any `CLAUDE.md`/`AGENTS.md`, and the files neighboring the diff.
+Scale the review to the change. You would never pull three people off their work to eyeball a typo, so you do not. Size up the diff first.
+
+For a small, low-risk change (a few lines, a config tweak, a copy fix, an obvious one-liner), review it yourself and go straight to the verdict. No fan-out.
+
+For a substantial or risky change (new logic, several files, or anything touching data, auth, money, concurrency, or a public API), spawn fresh-eyed agents to review alongside you, then synthesize their findings with your own (you carry bias toward work you had a hand in). Run these three in parallel (single message, multiple Task calls). Tell each one to first read the PR/issue context, any `CLAUDE.md`/`AGENTS.md`, and the files neighboring the diff.
 
 1. **Simplicity agent.** "Find anything over-engineered, unnecessarily abstract, or clever for the sake of being clever. Flag code a junior added to show off rather than to solve the problem: unnecessary indirection, wrapper functions that add no value, abstractions with a single implementation, options and config nobody asked for, premature generalization. Every line of code is a liability. If a line can be removed without changing behavior, it should be."
 

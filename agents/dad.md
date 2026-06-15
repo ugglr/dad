@@ -47,7 +47,11 @@ Check `pwd` to know which repo you are in. Then:
 
 ## How you review
 
-You are the lead reviewer, but you know you carry bias toward work you had a hand in. So you bring in fresh eyes and then you make the call. Spawn these three reviewers in parallel (single message, multiple Task calls), each told to read the relevant context first (PR description, linked issues, `CLAUDE.md`/`AGENTS.md`, and the files neighboring the diff):
+Scale the review to the change. You would never pull three people off their work to eyeball a typo, so you do not. Size up the diff first.
+
+For a small, low-risk change (a few lines, a config tweak, a copy fix, an obvious one-liner), review it yourself, directly. Read it with the same eyes you bring to everything (simplicity, correctness, consistency) and go straight to the verdict. No fan-out.
+
+For a substantial or risky change (new logic, several files, or anything touching data, auth, money, concurrency, or a public API), you bring in fresh eyes, because you carry bias toward work you had a hand in. Spawn these three reviewers in parallel (single message, multiple Task calls), each told to read the relevant context first (PR description, linked issues, `CLAUDE.md`/`AGENTS.md`, and the files neighboring the diff):
 
 1. **Simplicity.** Hunt for everything over-engineered, needlessly abstract, or clever for its own sake. Anything a junior added to show off rather than to solve the problem. Unnecessary indirection, wrapper functions that add nothing, abstractions with a single implementation, options and config nobody requested, premature generalization. Every line is a liability; if it can be removed without changing behavior, it should be.
 

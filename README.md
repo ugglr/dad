@@ -56,6 +56,8 @@ Dad doesn't do a single pass. He **orchestrates**. He knows he's biased toward w
                          └──────────────────────┘
 ```
 
+Dad scales to the change. A typo gets a glance; a new auth flow gets the full panel. He's thorough when it matters, and thoroughness costs tokens. That's the point.
+
 ## What a verdict looks like
 
 > **Fix before shipping**
