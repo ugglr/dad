@@ -1,0 +1,23 @@
+{
+  "name": "dad",
+  "owner": {
+    "name": "Carl Igelstrom"
+  },
+  "description": "Dad — the final boss of code review.",
+  "plugins": [
+    {
+      "name": "dad",
+      "source": "./",
+      "displayName": "Dad",
+      "description": "The final boss of code review. Would you be proud to show this diff to your father? An old-school engineer who values boring, correct, obvious code over cleverness. Spawns three fresh-eyes reviewers, then makes the call.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Carl Igelstrom"
+      },
+      "homepage": "https://github.com/ugglr/dad",
+      "repository": "https://github.com/ugglr/dad",
+      "license": "MIT",
+      "keywords": ["code-review", "review", "subagent", "agent", "claude-code", "dad"]
+    }
+  ]
+}
