@@ -27,33 +27,33 @@ That's the whole philosophy: *would I be proud to show this to Dad?* If the hone
 Dad doesn't do a single pass. He **orchestrates**. He knows he's biased toward work he had a hand in, so he brings in fresh eyes, then makes the call himself, and he's just as willing to overrule a reviewer *toward* simplicity ("stop gold-plating it") as away from a bug.
 
 ```
-                         ┌──────────────────────┐
-        your diff  ─────▶│         DAD          │
-                         │   (reads the intent  │
-                         │    before any line)  │
-                         └──────────┬───────────┘
-                                    │  spawns 3 fresh-eyes reviewers, in parallel
-                 ┌──────────────────┼──────────────────┐
-                 ▼                  ▼                  ▼
-          ┌────────────┐    ┌────────────┐    ┌────────────┐
-          │ SIMPLICITY │    │ CORRECTNESS│    │CONSISTENCY │
-          │ over-eng,  │    │ bugs, races│    │ matches the│
-          │ clever-for-│    │ edge cases,│    │ patterns   │
-          │ its-own-   │    │ cleanup,   │    │ already in │
-          │ sake       │    │ leaks      │    │ the codebase│
-          └─────┬──────┘    └─────┬──────┘    └─────┬──────┘
-                └──────────────────┼──────────────────┘
-                                   ▼
-                         ┌──────────────────────┐
-                         │   DAD's VERDICT       │
-                         │  Fix before shipping  │
-                         │  Should improve       │
-                         │  Leave it             │
-                         │  ──────────────────   │
-                         │  "Ship it." /         │
-                         │  "Not yet: <one       │
-                         │   thing in the way>"  │
-                         └──────────────────────┘
+               ┌──────────────────────┐
+  your diff ──▶│         DAD          │
+               │   (reads the intent  │
+               │    before any line)  │
+               └───────────┬──────────┘
+                           │  spawns 4 fresh-eyes reviewers, in parallel
+      ┌─────────────┬──────┴──────┬─────────────┐
+      ▼             ▼             ▼             ▼
+┌───────────┐ ┌───────────┐ ┌───────────┐ ┌───────────┐
+│SIMPLICITY │ │CORRECTNESS│ │CONSISTENCY│ │STRUCTURE  │
+│over-eng,  │ │bugs,      │ │matches    │ │god objs,  │
+│clever for │ │races,     │ │the        │ │wrong      │
+│its own    │ │edge cases,│ │patterns   │ │layer, DB  │
+│sake       │ │leaks      │ │already    │ │heavy lift │
+└─────┬─────┘ └─────┬─────┘ └─────┬─────┘ └─────┬─────┘
+      └─────────────┴──────┬──────┴─────────────┘
+                           ▼
+               ┌──────────────────────┐
+               │   DAD's VERDICT      │
+               │  Fix before shipping │
+               │  Should improve      │
+               │  Leave it            │
+               │  ──────────────────  │
+               │  "Ship it." /        │
+               │  "Not yet: <one      │
+               │   thing in the way>" │
+               └──────────────────────┘
 ```
 
 Dad scales to the change. A typo gets a glance; a new auth flow gets the full panel. He's thorough when it matters, and thoroughness costs tokens. That's the point.
@@ -63,6 +63,7 @@ Dad scales to the change. A typo gets a glance; a new auth flow gets the full pa
 > **Fix before shipping**
 > - `src/cache.ts`: you wrote a `CacheFactory` that builds exactly one kind of cache. It's a `Map` with extra steps and a diagram you have to hold in your head. Delete the factory. Use the `Map`.
 > - `useTimer.ts:23`: the interval is never cleared on unmount. This leaks. It'll look fine in dev and it'll page someone at 3am.
+> - `feed.service.ts`: 2,000 lines doing nine jobs, and it pulls every row into memory to `.filter().map()` and sort the feed by hand. That's the database's work, and this is a god object. Push the filtering and paging into the query, then split this file along its seams.
 >
 > **Should improve**
 > - `formatDate` reimplements what `Intl.DateTimeFormat` already does, including a bug on single-digit days. Not blocking. But you know better.
