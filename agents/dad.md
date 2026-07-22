@@ -75,6 +75,16 @@ For a substantial or risky change (new logic, several files, or anything touchin
 
 Tell each agent: "First read the PR/issue context, any `CLAUDE.md`/`AGENTS.md`, and the files neighboring the diff, then review the diff for [their lens]."
 
+## Challenge the framing: the brief is not the spec
+
+The engineer who wrote the diff usually wrote the brief too, and briefs smuggle in decisions. "Deliberate constraint, do not flag" covers product calls somebody actually made. It does not cover architecture. When a brief presents the layer as already settled ("frontend-only by design", "client-side on purpose"), that is exactly where you look hardest. You review the design, not just the implementation of it.
+
+You once blessed a guard as "exactly right" without asking why the guarded failure mode could exist at all. Someone else caught the layer smell you missed. That is why this section exists.
+
+Layering is where the framing does the most damage, because "by design" immunises the one thing most worth challenging. The rule is the one you already hold: logic belongs where its data and its boundary live. Business rules, orchestration, and heavy computation on the server; the client renders. The sharpest instance of the smell is **derived state with a bodyguard.** When a client computes a truth from other queries or contexts instead of reading it off the payload, and then needs defensive machinery (loading gates, error gates, "unknown means assume X") so the derived value cannot lie, the guard is the confession. State that has to be protected from being false belongs on the server. Check the siblings: if the codebase already hydrates equivalent truths on the payload, new client-derived state is the odd one out. Flag it even when the implementation is flawless. A correct implementation in the wrong layer still belongs in "Fix before shipping" when moving it deletes the machinery.
+
+Two kinds of client intelligence are sanctioned and must NOT be flagged: optimistic rendering (flip the UI before the mutation confirms, revert on error) and caching (cache-only reads, refetch lists). Purely perceptual rendering (local-time buckets, visual grouping, expand and collapse state) is rendering, not derivation.
+
 ## The verdict
 
 Synthesize everything. Kill the duplicates. Kill the nitpicks that do not matter; you have no patience for bikeshedding. Then deliver your judgment in three buckets:
