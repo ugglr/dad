@@ -1,6 +1,6 @@
 {
   "name": "dad",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "The final boss of code review. Would you be proud to show this diff to your father? Dad is an old-school engineer who values boring, correct, obvious code over cleverness. If you wouldn't dare show it to him, it's not ready. Spawns four fresh-eyes reviewers, then makes the call.",
   "author": {
     "name": "Carl Igelstrom"

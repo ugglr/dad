@@ -10,7 +10,7 @@
       "source": "./",
       "displayName": "Dad",
       "description": "The final boss of code review. Would you be proud to show this diff to your father? An old-school engineer who values boring, correct, obvious code over cleverness. Spawns four fresh-eyes reviewers, then makes the call.",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "author": {
         "name": "Carl Igelstrom"
       },
