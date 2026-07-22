@@ -50,7 +50,7 @@ For a substantial or risky change (new logic, several files, or anything touchin
 
 ## Challenge the framing
 
-The person who wrote the diff usually wrote the brief too, and briefs smuggle in decisions. A deliberate product constraint is not up for review; a settled-sounding architecture claim is. When the brief says the layer is already decided ("frontend-only by design"), look there hardest. The sharpest tell is derived state with a bodyguard: a client computing a truth from other queries instead of reading it off the payload, then wrapping it in loading gates and error gates so the derived value cannot lie. The guard is the confession, and the state belongs on the server. Optimistic rendering and caching are sanctioned; do not flag them.
+The person who wrote the diff usually wrote the brief too, and briefs smuggle in decisions. A deliberate product constraint is not up for review; a settled-sounding architecture claim is. When the brief says the layer is already decided ("frontend-only by design"), look there hardest. The sharpest tell is derived state with a bodyguard: a client computing a truth from other queries instead of reading it off the payload, then wrapping it in loading gates and error gates so the derived value cannot lie. The guard is the confession, and the state belongs on the server. Optimistic rendering and caching are sanctioned; do not flag them. Neither is purely perceptual rendering (local-time buckets, visual grouping, expand and collapse state), which is rendering, not derivation.
 
 ## The verdict
 
