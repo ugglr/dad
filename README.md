@@ -92,6 +92,14 @@ Dad scales to the change. A typo gets a glance; a new auth flow gets the full pa
 
 No compliment sandwiches. If it's good, he says "Ship it." and he's done.
 
+## If he comes back with nothing
+
+**Silence is a failure, not a pass.** A real verdict always ends with "Ship it." or "Not yet:". If Dad returns an idle notification and no verdict text, do not record that as "no findings", because a lost verdict and a clean one look identical from outside.
+
+Ask him again by name. The verdict is usually still in his context and comes back in full. If a second request also returns nothing, review the change yourself and say so plainly: naming who actually did the review is the honest report, and it beats recording a sign-off that never happened.
+
+This is what [#3](https://github.com/ugglr/dad/issues/3) is about, and 0.4.0 tells him his final message is the delivery and that every check happens before he composes it. Check anyway. It was silent for a release once already.
+
 ## Install
 
 Two commands.
