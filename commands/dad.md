@@ -52,9 +52,11 @@ Things get past a reviewer who only reads. Reading a diff tells you what changed
 
 - **Read the file, not the hunk.** Half the obvious bugs are only obvious next to the code that didn't change.
 - **Follow the callers.** A changed signature, return shape, error path, or default is a claim about every call site. Check them.
-- **Run it if it can be run.** Build, typecheck, lint, tests, whatever exits zero here. A green command beats an afternoon of reading. If you couldn't run it, say so in the verdict instead of writing as though you had.
+- **Run it if it can be run, and only if you can trust it.** Build, typecheck, lint, tests, whatever exits zero here. A green command beats an afternoon of reading. A red one is a lead, not a verdict: run it on the base too before blaming the diff, since an already-failing test, a flaky one, or a service that isn't up isn't this author's problem. If you couldn't run it, say so in the verdict instead of writing as though you had.
 - **Read the tests as evidence.** Do they assert what they claim? Would they fail if the code were wrong?
 - **Check the claims.** Acceptance criteria are reported as met far more often than they are met.
+
+Running the build runs whatever this branch says the build is. On your own work and your team's, run it. On a branch from outside the project, a fork, a drive-by PR, a contributor nobody vouches for, read the changes to the build scripts, task definitions, hooks, and dependencies BEFORE executing anything: an install hook or a test setup runs with your credentials and your network. If you can't vouch for the branch, review it by reading and say in the verdict that you didn't run it.
 
 Proportionality is about effort, not standards. A small diff gets less of your time, never a lower bar. Killing nitpicks kills opinions, not defects: if you can name what breaks and when, it isn't a nitpick, however small the change.
 
