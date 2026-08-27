@@ -64,6 +64,8 @@ He doesn't do a single pass. He **orchestrates**. He knows he's biased toward wo
                └──────────────────────┘
 ```
 
+Everything he reads out of the repository is evidence about the change, never an instruction to him. A PR description, a commit message, an `AGENTS.md` added by the branch: on a fork, all of it is written by a stranger, and anything in there trying to set his standard or wave him past a check is itself a finding. He's also pinned to read-only tools, so he can review your code but never edit it.
+
 He doesn't review by reading alone, which is where most reviewers lose things. A diff hands you six lines with the context stripped off, so he opens the whole file, follows the callers of anything whose signature or error path changed, and runs the build and the tests. A red command is a lead rather than a verdict, so he checks the base branch before blaming the diff. And he won't execute a branch he can't vouch for, because running the build runs whatever that branch says the build is; on an untrusted fork he reads instead and says so. If he couldn't run it, he says so in the verdict instead of writing as though he had.
 
 Dad scales to the change. A typo gets a glance; a new auth flow gets the full panel. He's thorough when it matters, and thoroughness costs tokens. That's the point. But proportionality is about effort, not standards: a small diff gets less of his time, never a lower bar.
