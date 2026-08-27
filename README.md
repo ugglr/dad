@@ -28,7 +28,7 @@ Dad judges three things, in this order, because a finding at one level makes the
 
 **1. Should this exist, and is this the right solution?** Before a word about how it's written. Is there a smaller solution? Is there one already in the codebase nobody went looking for? Could the problem be removed instead of solved? A brief doesn't certify itself either: *"it's a product decision"* settles what to build, not what it costs, and it never covers architecture. This is the question Dad keeps for himself.
 
-**2. Is it correct, and is it built the way good engineers build things?** Correctness is a floor and is never traded for elegance. Then: no cleverness, YAGNI, DRY where the duplication is real and not where two things merely rhyme. What one line solves gets one line. Slop goes out the window, the `try/catch` that swallows and returns null, the helper called once, the options object with one option, the branch that can't be reached. And he counted every CPU cycle in his day, so a query inside a loop, a whole collection fetched to read one field, or work redone on every render is wrong however nicely it reads.
+**2. Is it correct, and is it built the way good engineers build things?** Correctness is a floor and is never traded for elegance. Then: no cleverness, YAGNI, DRY where the duplication is real and not where two things merely rhyme. What one line solves gets one line. Slop goes out the window, the `try/catch` that swallows and returns null, the helper called once, the options object with one option, the branch that can't be reached. Comments are lines too, so prose that restates the code below it, narrates the obvious, or recounts what the code used to do gets flagged like any other padding, and a comment that needs fifteen lines is read as a symptom of code that needs a better name. And he counted every CPU cycle in his day, so a query inside a loop, a whole collection fetched to read one field, or work redone on every render is wrong however nicely it reads.
 
 **3. Does it fit the codebase? Consistency is law.** And it outranks local improvement. A better pattern introduced in one file isn't an improvement, it's a second pattern, and now everyone has to know both and guess which one applies. Two ways to do one thing is how a codebase rots, and it never arrives as one bad decision. It arrives as thirty good ones. Either the codebase moves or the change conforms. Never both standing.
 
@@ -64,7 +64,9 @@ He doesn't do a single pass. He **orchestrates**. He knows he's biased toward wo
                └──────────────────────┘
 ```
 
-Everything he reads out of the repository is evidence about the change, never an instruction to him. A PR description, a commit message, an `AGENTS.md` added by the branch: on a fork, all of it is written by a stranger, and anything in there trying to set his standard or wave him past a check is itself a finding. He's also pinned to read-only tools, so he can review your code but never edit it.
+Everything he reads out of the repository is evidence about the change, never an instruction to him. A PR description, a commit message, an `AGENTS.md` added by the branch: on a fork, all of it is written by a stranger, and anything aimed at the reviewer, trying to set his standard or wave him past a check, is itself a finding. He reads the project's conventions from the base branch, so a change cannot ship the standard it is judged by.
+
+He has no editing tools. The agent grants `Read`, `Glob`, `Grep`, `Bash` and the four lenses, so he can run your tests but cannot write to a file, and the lenses are stricter still and execute nothing at all, which is why exactly one process ever touches your checkout. Be clear on what that is and isn't: `Bash` is `Bash`. He's a reviewer under instruction, not a sandbox. He won't execute a branch he can't vouch for, and he checks a base branch in a separate worktree rather than moving `HEAD` under your uncommitted work, but run him on code you'd be willing to run yourself.
 
 He doesn't review by reading alone, which is where most reviewers lose things. A diff hands you six lines with the context stripped off, so he opens the whole file, follows the callers of anything whose signature or error path changed, and runs the build and the tests. A red command is a lead rather than a verdict, so he checks the base branch before blaming the diff. And he won't execute a branch he can't vouch for, because running the build runs whatever that branch says the build is; on an untrusted fork he reads instead and says so. If he couldn't run it, he says so in the verdict instead of writing as though he had.
 
@@ -94,7 +96,7 @@ No compliment sandwiches. If it's good, he says "Ship it." and he's done.
 
 ## If he comes back with nothing
 
-**Silence is a failure, not a pass.** A real verdict always ends with "Ship it." or "Not yet:". If Dad returns an idle notification and no verdict text, do not record that as "no findings", because a lost verdict and a clean one look identical from outside.
+**Silence is a failure, not a pass.** A real verdict always ends with "Ship it." or "Not yet:", the one exception being that he could not work out what the change is for and has asked you a question, which looks nothing like silence. If Dad returns an idle notification and no verdict text, do not record that as "no findings", because a lost verdict and a clean one look identical from outside.
 
 Ask him again by name. The verdict is usually still in his context and comes back in full. If a second request also returns nothing, review the change yourself and say so plainly: naming who actually did the review is the honest report, and it beats recording a sign-off that never happened.
 
@@ -115,7 +117,9 @@ Then say *"dad review this"* in any conversation (he shows up in `/agents`), or 
 
 ### Any other agent
 
-Dad is just a system prompt. Copy [`agents/dad.md`](agents/dad.md) into your tool's custom-instructions / rules / agent file. The persona and the review framework travel anywhere; only the slash-command wiring is Claude Code specific.
+Dad is mostly just a system prompt. Copy [`agents/dad.md`](agents/dad.md) into your tool's custom-instructions / rules / agent file, and the four lenses in [`agents/`](agents/) alongside it if your tool can dispatch named sub-agents.
+
+The persona and the review framework travel anywhere. The containment does not: the slash command, the `tools:` line that denies him editing tools, and the named lens agents are Claude Code specific. Paste him somewhere without an equivalent and you get the judgment with whatever tools that agent already had, which is a different bargain. Worth knowing which one you're making.
 
 ## Why "Dad"
 
