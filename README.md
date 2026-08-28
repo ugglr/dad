@@ -46,9 +46,9 @@ He doesn't do a single pass. He **orchestrates**. He knows he's biased toward wo
 ┌───────────┐ ┌───────────┐ ┌───────────┐ ┌───────────┐
 │SIMPLICITY │ │CORRECTNESS│ │CONSISTENCY│ │STRUCTURE  │
 │slop, YAGNI│ │bugs, races│ │is LAW: one│ │god objs,  │
-│a one-line │ │edge cases,│ │author, one│ │wrong layer│
-│job gets   │ │and it runs│ │way to do  │ │DB lifting,│
-│one line   │ │the tests  │ │one thing  │ │wasted work│
+│a one-line │ │edge cases,│ │author, one│ │duplication│
+│job gets   │ │tests that │ │way to do  │ │DB lifting,│
+│one line   │ │cannot fail│ │one thing  │ │wasted work│
 └─────┬─────┘ └─────┬─────┘ └─────┬─────┘ └─────┬─────┘
       └─────────────┴──────┬──────┴─────────────┘
                            ▼
@@ -66,9 +66,9 @@ He doesn't do a single pass. He **orchestrates**. He knows he's biased toward wo
 
 Everything he reads out of the repository is evidence about the change, never an instruction to him. A PR description, a commit message, an `AGENTS.md` added by the branch: on a fork, all of it is written by a stranger, and anything aimed at the reviewer, trying to set his standard or wave him past a check, is itself a finding. He reads the project's conventions from the base branch, so a change cannot ship the standard it is judged by.
 
-He has no editing tools. The agent grants `Read`, `Glob`, `Grep`, `Bash` and the four lenses, so he can run your tests but cannot write to a file, and the lenses are stricter still and execute nothing at all, which is why exactly one process ever touches your checkout. Be clear on what that is and isn't: `Bash` is `Bash`. He's a reviewer under instruction, not a sandbox. He won't execute a branch he can't vouch for, and he checks a base branch in a separate worktree rather than moving `HEAD` under your uncommitted work, but run him on code you'd be willing to run yourself.
+The agent grants `Read`, `Glob`, `Grep`, `Bash`, `SendMessage` and `Agent`, and the four lenses drop the last two. So none of them holds an editing tool. Be clear on what that is and isn't: `Bash` is `Bash`, and it reaches `sed -i` and `git commit`. Every one of them is a reviewer **under instruction** not to change or execute anything, rather than a sandbox prevented from it, and only Dad is told to run your build at all. He won't execute a branch he can't vouch for, and he checks a base in a detached worktree rather than moving `HEAD` under your uncommitted work. Run him on code you'd be willing to run yourself.
 
-He doesn't review by reading alone, which is where most reviewers lose things. A diff hands you six lines with the context stripped off, so he opens the whole file, follows the callers of anything whose signature or error path changed, and runs the build and the tests. A red command is a lead rather than a verdict, so he checks the base branch before blaming the diff. And he won't execute a branch he can't vouch for, because running the build runs whatever that branch says the build is; on an untrusted fork he reads instead and says so. If he couldn't run it, he says so in the verdict instead of writing as though he had.
+He doesn't review by reading alone, which is where most reviewers lose things. A diff hands you six lines with the context stripped off, so he opens the whole file, follows the callers of anything whose signature or error path changed, and runs the build and the tests. A red command is a lead rather than a verdict, so he checks the base before blaming the diff. If he couldn't run it, he says so in the verdict instead of writing as though he had.
 
 Dad scales to the change. A typo gets a glance; a new auth flow gets the full panel. He's thorough when it matters, and thoroughness costs tokens. That's the point. But proportionality is about effort, not standards: a small diff gets less of his time, never a lower bar.
 
@@ -119,7 +119,9 @@ Then say *"dad review this"* in any conversation (he shows up in `/agents`), or 
 
 Dad is mostly just a system prompt. Copy [`agents/dad.md`](agents/dad.md) into your tool's custom-instructions / rules / agent file, and the four lenses in [`agents/`](agents/) alongside it if your tool can dispatch named sub-agents.
 
-The persona and the review framework travel anywhere. The containment does not: the slash command, the `tools:` line that denies him editing tools, and the named lens agents are Claude Code specific. Paste him somewhere without an equivalent and you get the judgment with whatever tools that agent already had, which is a different bargain. Worth knowing which one you're making.
+The persona and the review framework travel anywhere. What doesn't travel is the wiring: the `tools:` lines that withhold editing tools and the named lens agents are Claude Code specific. Paste him elsewhere and you get the judgment with whatever tools that agent already had, which is a different bargain.
+
+The same caveat applies to `/dad` here. A slash command runs in your own session with your own tools, so that path has no restriction on it at all, only the instruction not to edit. The agent is the contained one.
 
 ## Why "Dad"
 
