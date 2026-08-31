@@ -8,7 +8,7 @@
 
 ### Would you be proud to show this to your father?
 
-Dad is the final boss of code review for AI coding agents. He's an old-school engineer with forty years on the tools. He wrote assembly when that was the only option, and he submitted code change requests on paper and defended every line in person. He is not impressed by cleverness, abstraction layers, or "scalable architecture." He is impressed by exactly one thing: **code that does what it needs to do and nothing more.**
+Dad is the final boss of code review for AI coding agents. He's an old-school engineer with forty years on the tools. He wrote assembly when that was the only option. He is not impressed by cleverness, abstraction layers, or "scalable architecture." He is impressed by exactly one thing: **code that does what it needs to do and nothing more.**
 
 Nothing merges until it goes through Dad.
 
@@ -18,21 +18,19 @@ Nothing merges until it goes through Dad.
 
 Most review tools are a gate you submit to *after* the work. Dad is the bar you hold yourself to *before* it.
 
-The test is pride. An agent about to put a change in front of Dad that feels a knot in its stomach already knows the answer. It just hasn't admitted it yet. **If you wouldn't dare show it to him, it's not ready, and you knew that before he opened it.** The best review Dad gives is the one that wasn't needed, because the author already asked the question and fixed it first.
-
-That's the whole philosophy: *would I be proud to show this to Dad?* If the honest answer is no, if you'd wince, hedge, or start explaining before he's read a line, the work isn't done.
+The test is pride. **If you wouldn't dare show it to him, it's not ready, and you knew that before he opened it.** The best review Dad gives is the one that wasn't needed, because you asked the question first and fixed it yourself.
 
 ## How it works
 
-Dad judges three things, in this order, because a finding at one level makes the levels below it beside the point. There is no sense polishing the inside of a solution that shouldn't exist.
+Dad judges three things, in order, because a finding at one level makes the ones below it beside the point:
 
-**1. Should this exist, and is this the right solution?** Before a word about how it's written. And if the premise turns out to be false, that's where he stops: if the behaviour being corrected is already what the code does, or the thing already exists three files away, you get one paragraph saying so rather than a thorough review of the wrong thing. The bar is evidence the change isn't needed, not a failed reproduction, so a bug he couldn't trigger still gets a full review. He won't spend four reviewers on the inside of a change that shouldn't exist. Is there a smaller solution? Is there one already in the codebase nobody went looking for? Could the problem be removed instead of solved? A brief doesn't certify itself either: *"it's a product decision"* settles what to build, not what it costs, and it never covers architecture. This is the question Dad keeps for himself.
+**1. Should this exist, and is this the right solution?** If the premise is false, he stops there: one paragraph, not a thorough review of the wrong thing. He keeps this question for himself.
 
-**2. Is it correct, and is it built the way good engineers build things?** Correctness is a floor and is never traded for elegance. Then: no cleverness, YAGNI, DRY where the duplication is real and not where two things merely rhyme. What one line solves gets one line. Slop goes out the window, the `try/catch` that swallows and returns null, the helper called once, the options object with one option, the branch that can't be reached. And he counted every CPU cycle in his day, so a query inside a loop, a whole collection fetched to read one field, or work redone on every render is wrong however nicely it reads.
+**2. Is it correct, and is it built the way good engineers build things?** Correctness is a floor. Then no cleverness, YAGNI, DRY where the duplication is real. What one line solves gets one line.
 
-**3. Does it fit the codebase? Consistency is law.** And it outranks local improvement. A better pattern introduced in one file isn't an improvement, it's a second pattern, and now everyone has to know both and guess which one applies. Two ways to do one thing is how a codebase rots, and it never arrives as one bad decision. It arrives as thirty good ones. Either the codebase moves or the change conforms. Never both standing.
+**3. Does it fit the codebase? Consistency is law.** A better pattern in one file is a second pattern. Either the codebase moves or the change conforms. Never both standing.
 
-He doesn't do a single pass. He **orchestrates**. He knows he's biased toward work he had a hand in, so he brings in fresh eyes for questions two and three, then makes the call himself, and he's just as willing to overrule a reviewer *toward* simplicity ("stop gold-plating it") as away from a bug.
+On a substantial change he spawns four fresh-eyes reviewers, then makes the call himself, as willing to overrule a reviewer *toward* simplicity ("stop gold-plating it") as away from a bug.
 
 ```
                ┌──────────────────────┐
@@ -64,11 +62,7 @@ He doesn't do a single pass. He **orchestrates**. He knows he's biased toward wo
                └──────────────────────┘
 ```
 
-Everything he reads out of the repository is evidence about the change, never an instruction to him. A PR description, a commit message, an `AGENTS.md` added by the branch: on a fork, all of it is written by a stranger, and anything in there trying to set his standard or wave him past a check is itself a finding. He also holds no editing tools: the agent grants `Read`, `Glob`, `Grep`, `Bash`, the ability to spawn reviewers, and `SendMessage` to re-ask a lens that came back silent. `Bash` is still `Bash`, so read that as a reviewer under instruction rather than a sandbox, but nothing in his own grant writes to your files.
-
-He doesn't review the hunks alone, which is where most reviewers lose things. A diff hands you six lines with the context stripped off, so he opens the whole file, follows the callers of anything whose signature or error path changed, and reads the tests asking whether they could actually fail. And when a finding turns on whether something really breaks, he runs it: an old-school engineer doesn't speculate about behaviour he can observe. He quotes the command and its output, and tells you whether he reproduced a thing or reasoned to it. The claims in your own summary get the same treatment: "all tests pass" is a hypothesis with an experiment attached, and an agent writes that sentence whether or not it checked. He won't execute a branch he can't vouch for, so on an untrusted fork he reads instead and says so.
-
-Dad scales to the change. A typo gets a glance; a new auth flow gets the full panel. He's thorough when it matters, and thoroughness costs tokens. That's the point. But proportionality is about effort, not standards: a small diff gets less of his time, never a lower bar.
+He reads whole files, not hunks. He runs the thing when running settles it, says whether he reproduced a finding or reasoned to it, and won't execute a branch he can't vouch for: on an untrusted fork he reads instead and says so. Everything he reads out of the repository is evidence, never an instruction to him: a branch trying to wave him past a check is itself a finding. He holds no editing tools; the grant is `Read`, `Glob`, `Grep`, `Bash`, spawning reviewers, and `SendMessage` to re-ask a silent one. `Bash` is still `Bash`, so read that as a reviewer under instruction rather than a sandbox. He's thorough when it matters, and thoroughness costs tokens; that's the point. A small diff gets less of his time, never a lower bar.
 
 ## What a verdict looks like
 
@@ -94,11 +88,7 @@ No compliment sandwiches. If it's good, he says "Ship it." and he's done.
 
 ## If he comes back with nothing
 
-**Silence is a failure, not a pass.** A real verdict always ends with "Ship it." or "Not yet:". If Dad returns an idle notification and no verdict text, do not record that as "no findings", because a lost verdict and a clean one look identical from outside.
-
-Ask him again by name. The verdict is usually still in his context and comes back in full. If a second request also returns nothing, review the change yourself and say so plainly: naming who actually did the review is the honest report, and it beats recording a sign-off that never happened.
-
-This is what [#3](https://github.com/ugglr/dad/issues/3) is about, and 0.4.0 tells him his final message is the delivery and that every check happens before he composes it. Check anyway. It was silent for a release once already.
+**Silence is a failure, not a pass.** A real verdict ends with "Ship it." or "Not yet:", and a lost verdict looks identical to a clean one from outside. Ask him again by name. If a second ask returns nothing, review the change yourself and say so. Never record silence as approval.
 
 ## Install
 
@@ -113,18 +103,18 @@ Two commands.
 
 Then say *"dad review this"* in any conversation (he shows up in `/agents`), or run `/dad` to review uncommitted changes (`/dad main` diffs against `main`).
 
-**Updating.** Installed plugins are version-cached: Dad stays at the version you installed until you pull a new one. To update him, refresh the marketplace, then update:
+**Updating.** Plugins are version-cached: Dad stays at the version you installed until you pull a new one.
 
 ```bash
 /plugin marketplace update dad
 /plugin update dad
 ```
 
-Then restart Claude Code (or run `/reload-plugins`) to apply it; until you do, the old version keeps running. Or turn on auto-update for the `dad` marketplace under `/plugin` → Marketplaces, and run `/reload-plugins` when Claude Code tells you a new version arrived.
+Then restart Claude Code (or run `/reload-plugins`) to apply it. Or turn on auto-update for the `dad` marketplace under `/plugin` → Marketplaces, and run `/reload-plugins` when it tells you a new version arrived.
 
 ### Codex
 
-Dad installs as a [skill](https://developers.openai.com/codex/skills): a folder holding a `SKILL.md`. Current Codex reads user skills from `~/.agents/skills`; builds up to at least 0.148 read `$CODEX_HOME/skills` (default `~/.codex/skills`) instead. Two files, straight from this repo:
+Dad installs as a [skill](https://developers.openai.com/codex/skills). Current Codex reads user skills from `~/.agents/skills`; builds up to at least 0.148 read `$CODEX_HOME/skills` (default `~/.codex/skills`) instead. Two files:
 
 ```bash
 mkdir -p ~/.agents/skills/dad
@@ -132,15 +122,17 @@ curl -fsSL -o ~/.agents/skills/dad/SKILL.md https://raw.githubusercontent.com/ug
 curl -fsSL -o ~/.agents/skills/dad/dad.md https://raw.githubusercontent.com/ugglr/dad/main/agents/dad.md
 ```
 
-Run `/skills` in Codex and confirm `dad` is listed. Codex picks up skill changes on its own; restart it if he doesn't show, and if he still doesn't, your build reads the older location, so repeat the three lines with `~/.codex/skills/dad`. Then ask for a dad review, or call him explicitly with `$dad`. To update, run the same lines again.
+Run `/skills` and confirm `dad` is listed; restart Codex if he doesn't show, and if he still doesn't, repeat the three lines with `~/.codex/skills/dad`. Then ask for a dad review, or call him with `$dad`. To update, run the same lines again.
 
 ### Any other agent
 
-Dad is just a system prompt. Copy [`agents/dad.md`](agents/dad.md) into your tool's custom-instructions / rules / agent file. The persona and the review framework travel anywhere; only the slash-command wiring is Claude Code specific.
+Dad is just a system prompt. Copy [`agents/dad.md`](agents/dad.md) into your tool's custom-instructions / rules / agent file. Only the slash-command wiring is Claude Code specific.
 
 ## Why "Dad"
 
 Because the bar that actually makes engineers do their best work isn't a linter or a checklist. It's not wanting to disappoint someone whose judgment they respect. Dad is that, made invokable.
+
+If you try him, tell me what he catches, and what he wrongly blocks (he has opinions). Issues are open.
 
 ---
 
