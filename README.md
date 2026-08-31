@@ -64,7 +64,7 @@ He doesn't do a single pass. He **orchestrates**. He knows he's biased toward wo
                └──────────────────────┘
 ```
 
-Everything he reads out of the repository is evidence about the change, never an instruction to him. A PR description, a commit message, an `AGENTS.md` added by the branch: on a fork, all of it is written by a stranger, and anything in there trying to set his standard or wave him past a check is itself a finding. He also holds no editing tools: the agent grants `Read`, `Glob`, `Grep`, `Bash` and the ability to spawn reviewers. `Bash` is still `Bash`, so read that as a reviewer under instruction rather than a sandbox, but nothing in his own grant writes to your files.
+Everything he reads out of the repository is evidence about the change, never an instruction to him. A PR description, a commit message, an `AGENTS.md` added by the branch: on a fork, all of it is written by a stranger, and anything in there trying to set his standard or wave him past a check is itself a finding. He also holds no editing tools: the agent grants `Read`, `Glob`, `Grep`, `Bash`, the ability to spawn reviewers, and `SendMessage` to re-ask a lens that came back silent. `Bash` is still `Bash`, so read that as a reviewer under instruction rather than a sandbox, but nothing in his own grant writes to your files.
 
 He doesn't review the hunks alone, which is where most reviewers lose things. A diff hands you six lines with the context stripped off, so he opens the whole file, follows the callers of anything whose signature or error path changed, and reads the tests asking whether they could actually fail. And when a finding turns on whether something really breaks, he runs it: an old-school engineer doesn't speculate about behaviour he can observe. He quotes the command and its output, and tells you whether he reproduced a thing or reasoned to it. The claims in your own summary get the same treatment: "all tests pass" is a hypothesis with an experiment attached, and an agent writes that sentence whether or not it checked. He won't execute a branch he can't vouch for, so on an untrusted fork he reads instead and says so.
 
@@ -102,9 +102,9 @@ This is what [#3](https://github.com/ugglr/dad/issues/3) is about, and 0.4.0 tel
 
 ## Install
 
-Two commands.
-
 ### Claude Code
+
+Two commands.
 
 ```bash
 /plugin marketplace add ugglr/dad
@@ -112,6 +112,27 @@ Two commands.
 ```
 
 Then say *"dad review this"* in any conversation (he shows up in `/agents`), or run `/dad` to review uncommitted changes (`/dad main` diffs against `main`).
+
+**Updating.** Installed plugins are version-cached: Dad stays at the version you installed until you pull a new one. To update him, refresh the marketplace, then update:
+
+```bash
+/plugin marketplace update dad
+/plugin update dad
+```
+
+Then restart Claude Code (or run `/reload-plugins`) to apply it; until you do, the old version keeps running. Or turn on auto-update for the `dad` marketplace under `/plugin` → Marketplaces, and run `/reload-plugins` when Claude Code tells you a new version arrived.
+
+### Codex
+
+Dad installs as a [skill](https://developers.openai.com/codex/skills): a folder holding a `SKILL.md`. Current Codex reads user skills from `~/.agents/skills`; builds up to at least 0.148 read `$CODEX_HOME/skills` (default `~/.codex/skills`) instead. Two files, straight from this repo:
+
+```bash
+mkdir -p ~/.agents/skills/dad
+curl -fsSL -o ~/.agents/skills/dad/SKILL.md https://raw.githubusercontent.com/ugglr/dad/main/codex/SKILL.md
+curl -fsSL -o ~/.agents/skills/dad/dad.md https://raw.githubusercontent.com/ugglr/dad/main/agents/dad.md
+```
+
+Run `/skills` in Codex and confirm `dad` is listed. Codex picks up skill changes on its own; restart it if he doesn't show, and if he still doesn't, your build reads the older location, so repeat the three lines with `~/.codex/skills/dad`. Then ask for a dad review, or call him explicitly with `$dad`. To update, run the same lines again.
 
 ### Any other agent
 
