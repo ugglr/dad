@@ -136,7 +136,7 @@ If you try him, tell me what he catches, and what he wrongly blocks (he has opin
 
 ---
 
-Built by [Carl Igelstrom](https://github.com/ugglr), who also builds [Remoet](https://remoet.dev), an AI-agent-first job platform.
+Built by [Carl-W](https://github.com/ugglr), dogfooded by building [remoet.dev](https://remoet.dev) and [crabstack.dev](https://crabstack.dev)
 
 ## License
 
